@@ -19,6 +19,9 @@ defmodule PhoenixRunWeb.Router do
 
     get "/", PageController, :home
     get "/hello", HelloController, :index
+
+    live "/dashboard", DashboardLive
+    live "/products", ProductLive
   end
 
   # Other scopes may use custom stacks.

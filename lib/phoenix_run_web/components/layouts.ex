@@ -34,8 +34,10 @@ defmodule PhoenixRunWeb.Layouts do
   slot :inner_block, required: true
 
   def app(assigns) do
+    assigns = assign_new(assigns, :flash, fn -> %{} end)
+
     ~H"""
-    <header class="navbar px-4 sm:px-6 lg:px-8">
+    <%!-- <header class="navbar px-4 sm:px-6 lg:px-8">
       <div class="flex-1">
         <a href="/" class="flex-1 flex w-fit items-center gap-2">
           <img src={~p"/images/logo.svg"} width="36" />
@@ -68,7 +70,39 @@ defmodule PhoenixRunWeb.Layouts do
       </div>
     </main>
 
-    <.flash_group flash={@flash} />
+    <.flash_group flash={@flash} /> --%>
+    <div class="min-h-screen bg-gray-50">
+      <!-- 네비게이션 -->
+      <header class="bg-white shadow">
+        <div class="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8">
+          <div class="flex justify-between h-16">
+            <div class="flex items-center">
+              <.link navigate={~p"/"} class="text-xl font-bold text-blue-600">
+                MyApp
+              </.link>
+            </div>
+
+            <nav class="flex space-x-8">
+              <.link navigate={~p"/dashboard"} class="text-gray-900 hover:text-blue-600">
+                대시보드
+              </.link>
+              <.link navigate={~p"/products"} class="text-gray-900 hover:text-blue-600">
+                상품
+              </.link>
+            </nav>
+          </div>
+        </div>
+      </header>
+      
+    <!-- 메인 콘텐츠 -->
+      <main class="max-w-7xl mx-auto py-6 sm:px-6 lg:px-8">
+        <.flash_group flash={@flash} />
+
+        <div class="px-4 py-6 sm:px-0">
+          {render_slot(@inner_block)}
+        </div>
+      </main>
+    </div>
     """
   end
 
@@ -151,4 +185,42 @@ defmodule PhoenixRunWeb.Layouts do
     </div>
     """
   end
+
+  # 기본 앱 레이아웃
+  # def app(assigns) do
+  #   ~H"""
+  #   <div class="min-h-screen bg-gray-50">
+  #     <!-- 네비게이션 -->
+  #     <header class="bg-white shadow">
+  #       <div class="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8">
+  #         <div class="flex justify-between h-16">
+  #           <div class="flex items-center">
+  #             <.link navigate={~p"/"} class="text-xl font-bold text-blue-600">
+  #               MyApp
+  #             </.link>
+  #           </div>
+
+  #           <nav class="flex space-x-8">
+  #             <.link navigate={~p"/dashboard"} class="text-gray-900 hover:text-blue-600">
+  #               대시보드
+  #             </.link>
+  #             <.link navigate={~p"/products"} class="text-gray-900 hover:text-blue-600">
+  #               상품
+  #             </.link>
+  #           </nav>
+  #         </div>
+  #       </div>
+  #     </header>
+
+  #   <!-- 메인 콘텐츠 -->
+  #     <main class="max-w-7xl mx-auto py-6 sm:px-6 lg:px-8">
+  #       <.flash_group flash={@flash} />
+
+  #       <div class="px-4 py-6 sm:px-0">
+  #         {render_slot(@inner_block)}
+  #       </div>
+  #     </main>
+  #   </div>
+  #   """
+  # end
 end

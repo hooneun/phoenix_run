@@ -118,3 +118,56 @@ get "/hello", HelloController, :index
 
 # 진행중
 https://hexdocs.pm/phoenix/request_lifecycle.html#layouts
+
+## LiveView Layout
+### Phoenix 1.8+ 레이아웃 시스템
+
+- 기존: `app.html.heex` 파일 사용
+- 신규: 함수 컴포넌트 기반 레이아웃
+
+```
+LiveView 렌더링 → app 함수 실행 → root.html.heex의 @inner_content
+
+1. LiveView render 함수 실행
+   ↓
+2. <.app> 컴포넌트 호출
+   ↓
+3. app 함수가 네비게이션 + 메인 콘텐츠 조합해서 HTML 생성
+   ↓
+4. 그 결과가 root.html.heex의 @inner_content에 주입
+   ↓
+5. 최종 완성된 HTML이 브라우저로 전송
+```
+
+1. Root Layout(`root.html.heex`)
+- HTML 기본 구조 (`<html>`, `<head>`, `<body>`)
+- 정적 콘텐츠 (변경되지 않음)
+- `{@inner_content}` 콘텐츠 주입
+
+2. App Layout(`layouts.ex`)
+- 동적 레이아웃(네비게이션, 플래시 메시지 등)
+- 함수 컴포넌트로 정의
+- `render_slot(@inner_block)` 으로 콘텐츠 주입
+
+### 모범 사례
+1. 추천하는 방식
+- 방법: 함수 컴포넌트 기반 레이아웃
+- 장점: 재사용성, 유지보수성 확장성
+- 사용률: 90% 이상의 Phoenix 프로젝트에서 사용
+
+2. 프로젝트 구조
+```
+lib/my_app_web/
+├── components/
+│   ├── layouts.ex          # 레이아웃 함수들
+│   ├── layouts/
+│   │   └── root.html.heex  # HTML 기본 구조
+│   └── core_components.ex  # 기본 컴포넌트들
+├── live/                   # LiveView 파일들
+├── controllers/            # Controller 파일들
+└── router.ex              # 라우팅 설정
+```
+
+3. Tip
+- 성능: 정적 콘텐츠는 root layout, 동적 콘텐츠는 app layout
+- 접근성: 시맨틱 HTML 태그와 ARIA 속성 사용
