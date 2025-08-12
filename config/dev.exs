@@ -3,7 +3,7 @@ import Config
 # Configure your database
 config :phoenix_run, PhoenixRun.Repo,
   username: "postgres",
-  password: "postgres",
+  password: "secret",
   hostname: "localhost",
   database: "phoenix_run_dev",
   stacktrace: true,

@@ -114,3 +114,7 @@ get "/hello", HelloController, :index
 | **Controller** | 요청 데이터를 해석하고, 비즈니스 로직 실행 후 응답에 필요한 데이터를 준비.     |
 | **View**       | HTML, JSON 등 형태로 데이터를 렌더링하여 최종 응답 생성.           |
 | **Response**   | 클라이언트에게 완성된 응답을 반환.                             |
+
+
+# 진행중
+https://hexdocs.pm/phoenix/request_lifecycle.html#layouts
